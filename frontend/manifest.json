@@ -1,0 +1,18 @@
+{
+    "name": "Breather",
+    "short_name": "Breather",
+    "description": "A minimalist breathing app for deep focus.",
+    "theme_color": "#1a1a2e",
+    "background_color": "#1a1a2e",
+    "display": "standalone",
+    "orientation": "portrait",
+    "start_url": "./index.html",
+    "icons": [
+        {
+            "src": "https://unpkg.com/lucide-static@0.292.0/icons/wind.svg",
+            "sizes": "192x192",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}

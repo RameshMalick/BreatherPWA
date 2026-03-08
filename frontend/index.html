@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BreatherBro PWA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+    <div id="app-container">
+
+        <!-- === HOME SCREEN === -->
+        <main id="screen-home" class="screen active">
+            <header class="header">
+                <div class="header-top">
+                    <ion-icon name="heart-outline" class="logo-icon"></ion-icon>
+                    <h1>BreatherBro</h1>
+                    <ion-icon name="settings-outline" class="settings-icon" id="btn-settings"></ion-icon>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                    <h2 id="greeting-text">Good morning.</h2>
+                    <div style="display:flex; gap: 8px;">
+                        <div id="home-streak-badge" class="level-badge"
+                            style="background: linear-gradient(135deg, #f97316, #ef4444);">🔥 0</div>
+                        <div id="home-level-badge" class="level-badge">Lvl 1</div>
+                    </div>
+                </div>
+                <p>Take a deep breath and start your day.</p>
+            </header>
+
+            <div class="grid-container">
+                <div class="card" id="card-box" data-type="box">
+                    <div class="card-icon"><ion-icon name="square-outline"></ion-icon></div>
+                    <h3>Box</h3>
+                    <p>4-4-4-4</p>
+                </div>
+                <div class="card" id="card-478" data-type="478">
+                    <div class="card-icon"><ion-icon name="bed-outline"></ion-icon></div>
+                    <h3>4-7-8</h3>
+                    <p>Relaxation</p>
+                </div>
+                <div class="card" id="card-equal" data-type="equal">
+                    <div class="card-icon"><ion-icon name="options-outline"></ion-icon></div>
+                    <h3>Equal</h3>
+                    <p>Balance</p>
+                </div>
+                <div class="card" id="card-hold" data-type="hold">
+                    <div class="card-icon"><ion-icon name="stopwatch-outline"></ion-icon></div>
+                    <h3>Hold</h3>
+                    <p>Test limit</p>
+                </div>
+            </div>
+
+            <div class="duration-selector">
+                <label>Session Duration</label>
+                <div class="stepper">
+                    <button id="dur-minus"><ion-icon name="remove"></ion-icon></button>
+                    <span id="dur-value">3m</span>
+                    <button id="dur-plus"><ion-icon name="add"></ion-icon></button>
+                </div>
+            </div>
+        </main>
+
+        <!-- === CUSTOM SCREEN === -->
+        <main id="screen-custom" class="screen">
+            <header class="header">
+                <div class="header-top">
+                    <h1>Custom Routine</h1>
+                </div>
+                <p>Create your own breathing pattern.</p>
+            </header>
+            <div class="custom-inputs">
+                <div class="input-row">
+                    <label>Inhale</label>
+                    <input type="number" id="inp-inhale" value="4" min="0" max="20" />
+                    <span>s</span>
+                </div>
+                <div class="input-row">
+                    <label>Top Hold</label>
+                    <input type="number" id="inp-topHold" value="4" min="0" max="20" />
+                    <span>s</span>
+                </div>
+                <div class="input-row">
+                    <label>Exhale</label>
+                    <input type="number" id="inp-exhale" value="4" min="0" max="20" />
+                    <span>s</span>
+                </div>
+                <div class="input-row">
+                    <label>Bottom Hold</label>
+                    <input type="number" id="inp-bottomHold" value="4" min="0" max="20" />
+                    <span>s</span>
+                </div>
+            </div>
+            <button class="primary-btn" style="margin-top:auto; margin-bottom: 100px;" id="btn-start-custom">Start
+                Custom</button>
+        </main>
+
+        <!-- === PROGRESS SCREEN === -->
+        <main id="screen-progress" class="screen">
+            <header class="header">
+                <div class="header-top">
+                    <h1>Progress</h1>
+                </div>
+            </header>
+            <div class="stats-grid">
+                <div class="stat-card" style="grid-column: span 2;">
+                    <h2 id="stat-level">Level 1</h2>
+                    <p id="stat-xp">0 / 100 XP to next level</p>
+                    <div class="xp-bar-container mt-2">
+                        <div class="xp-bar-fill" id="stat-xp-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h2 id="stat-sessions">0</h2>
+                    <p>Total Sessions</p>
+                </div>
+                <div class="stat-card">
+                    <h2 id="stat-minutes">0</h2>
+                    <p>Total Minutes</p>
+                </div>
+                <div class="stat-card">
+                    <h2 id="stat-max-hold">0s</h2>
+                    <p>Max Breath Hold</p>
+                </div>
+            </div>
+            <button class="primary-btn" id="btn-clear-stats" style="margin-top:20px; background: #fff;">Clear
+                Stats</button>
+        </main>
+
+        <!-- === SETTINGS SCREEN === -->
+        <main id="screen-settings" class="screen">
+            <header class="header">
+                <div class="header-top">
+                    <h1>Settings</h1>
+                </div>
+                <p>Configure your experience.</p>
+            </header>
+            <div class="custom-inputs">
+                <div class="input-row">
+                    <label>Visual Theme</label>
+                    <select id="sett-theme" class="settings-select">
+                        <option value="teal">Deep Teal</option>
+                        <option value="blue">Midnight Blue</option>
+                        <option value="green">Forest Green</option>
+                        <option value="orange">Warm Sunset</option>
+                        <option value="purple">Amethyst</option>
+                    </select>
+                </div>
+                <div class="input-row">
+                    <label>Background Sound</label>
+                    <select id="sett-music" class="settings-select">
+                        <option value="nature">Calm Nature</option>
+                        <option value="waterfall">Waterfall</option>
+                        <option value="ocean">Ocean Waves</option>
+                        <option value="rain">Rain & Thunder</option>
+                        <option value="focus">Deep Focus</option>
+                    </select>
+                </div>
+                <div class="input-row">
+                    <label>Voice Guidance</label>
+                    <input type="checkbox" id="sett-voice" checked style="width:24px; height:24px;" />
+                </div>
+                <div class="input-row">
+                    <label>Nature Sound</label>
+                    <input type="checkbox" id="sett-nature" checked style="width:24px; height:24px;" />
+                </div>
+                <div class="input-row">
+                    <label>Haptic Feedback</label>
+                    <input type="checkbox" id="sett-haptic" checked style="width:24px; height:24px;" />
+                </div>
+            </div>
+            <button class="primary-btn" style="margin-top:auto; margin-bottom: 20px; width:100%;"
+                id="btn-close-settings">Save & Close</button>
+        </main>
+
+        <!-- === EXERCISE SCREEN === -->
+        <main id="screen-exercise" class="screen">
+            <div class="exercise-header">
+                <ion-icon name="arrow-back" id="btn-back"></ion-icon>
+                <div class="timer-badge">
+                    <ion-icon name="time-outline"></ion-icon>
+                    <span id="session-timer">3:00</span>
+                </div>
+                <div style="width: 24px;"></div> <!-- spacer -->
+            </div>
+
+            <div class="exercise-stage">
+                <div class="vertical-slider" id="slider-voice">
+                    <div class="slider-fill" id="fill-voice" style="height: 80%;">
+                        <ion-icon name="person-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <div class="breathing-circle-container">
+                    <div id="breathing-circle" class="breathing-circle">
+                        <span id="countdown-text">Ready</span>
+                    </div>
+                </div>
+
+                <div class="vertical-slider" id="slider-music">
+                    <div class="slider-fill" id="fill-music" style="height: 50%;">
+                        <ion-icon name="musical-note-outline"></ion-icon>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-footer">
+                <h2 id="phase-label">Ready</h2>
+                <div style="display: flex; gap: 12px; justify-content: center;">
+                    <button id="btn-toggle-engine" class="primary-btn">Start</button>
+                    <button id="btn-share" class="primary-btn"
+                        style="display: none; background: #3b82f6; width: auto; padding: 16px 24px;">
+                        <ion-icon name="share-social"></ion-icon> Share
+                    </button>
+                </div>
+            </div>
+            <canvas id="confetti-canvas"
+                style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 100;"></canvas>
+        </main>
+
+        <!-- Tab Bar -->
+        <nav class="tab-bar">
+            <div class="tab-item active" id="tab-home" data-target="screen-home">
+                <ion-icon name="home"></ion-icon>
+                <span>Home</span>
+            </div>
+            <div class="tab-item" id="tab-custom" data-target="screen-custom">
+                <ion-icon name="options"></ion-icon>
+                <span>Custom</span>
+            </div>
+            <div class="tab-item" id="tab-progress" data-target="screen-progress">
+                <ion-icon name="bar-chart"></ion-icon>
+                <span>Progress</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- PWA & IndexedDB Initialization -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js'); });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/idb@8/build/umd.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
