@@ -198,11 +198,7 @@ function speak(text) {
 
 // Custom Audio Synth Port
 const AUDIO_TRACKS = {
-    'nature': 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=ambient-piano-amp-strings-10711.mp3',
-    'yoga1': 'https://cdn.pixabay.com/download/audio/2022/11/22/audio_756f505436.mp3',
-    'yoga2': 'https://cdn.pixabay.com/download/audio/2022/02/07/audio_d0bf2ab1ec.mp3',
-    'yoga3': 'https://cdn.pixabay.com/download/audio/2022/10/25/audio_824f11d1bd.mp3',
-    'yoga4': 'https://cdn.pixabay.com/download/audio/2022/05/16/audio_f5bd36528d.mp3'
+    'nature': 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=ambient-piano-amp-strings-10711.mp3'
 };
 window.natureAudio = new Audio(AUDIO_TRACKS['nature']);
 window.natureAudio.loop = true;
@@ -260,6 +256,51 @@ function controlAudio(play, volume, audioType) {
         window.activeNodes.push(lfo, lfoGain);
     } else if (audioType === 'focus') {
         filter.type = 'bandpass'; filter.frequency.value = 150; filter.Q.value = 2.0; gainNode.gain.value = volume;
+    } else if (audioType.startsWith('yoga')) {
+        // Yoga tracks: Instead of noise, we use harmonious oscillators for ambient drones
+        noise.disconnect(); // Don't use the noise buffer for yoga
+        let osc1 = window.audioCtx.createOscillator();
+        let osc2 = window.audioCtx.createOscillator();
+        let osc3 = window.audioCtx.createOscillator();
+
+        let padGain = window.audioCtx.createGain();
+        padGain.gain.value = volume * 0.3;
+
+        if (audioType === 'yoga1') {
+            // Relaxing Yoga: Warm major chord drone
+            osc1.type = 'sine'; osc1.frequency.value = 261.63; // C4
+            osc2.type = 'triangle'; osc2.frequency.value = 329.63; // E4
+            osc3.type = 'sine'; osc3.frequency.value = 392.00; // G4
+        } else if (audioType === 'yoga2') {
+            // Meditation Yoga: Deep grounding drone (Om tone)
+            osc1.type = 'sine'; osc1.frequency.value = 136.1; // Om freq
+            osc2.type = 'sine'; osc2.frequency.value = 272.2; // Octave
+            osc3.type = 'triangle'; osc3.frequency.value = 68.05; // Sub
+            padGain.gain.value = volume * 0.5;
+        } else if (audioType === 'yoga3') {
+            // Ambient Yoga: Ethereal Pad
+            osc1.type = 'sine'; osc1.frequency.value = 440.00; // A4
+            osc2.type = 'triangle'; osc2.frequency.value = 554.37; // C#5
+            osc3.type = 'sine'; osc3.frequency.value = 659.25; // E5
+
+            // Add a slow LFO for ethereal pulsing
+            let lfo = window.audioCtx.createOscillator(); lfo.type = 'sine'; lfo.frequency.value = 0.1;
+            let lfoGain = window.audioCtx.createGain(); lfoGain.gain.value = volume * 0.2;
+            lfo.connect(lfoGain); lfoGain.connect(padGain.gain); lfo.start();
+            window.activeNodes.push(lfo, lfoGain);
+        } else if (audioType === 'yoga4') {
+            // Zen Tibet: Binaural Beat (Theta waves for deep meditation)
+            osc1.type = 'sine'; osc1.frequency.value = 200; // Left ear
+            osc2.type = 'sine'; osc2.frequency.value = 206; // Right ear (6Hz Theta difference)
+            osc3.type = 'triangle'; osc3.frequency.value = 100; // Bass
+            padGain.gain.value = volume * 0.4;
+        }
+
+        osc1.connect(padGain); osc2.connect(padGain); osc3.connect(padGain);
+        padGain.connect(window.audioCtx.destination);
+        osc1.start(); osc2.start(); osc3.start();
+        window.activeNodes.push(osc1, osc2, osc3, padGain);
+        return; // Skip the noise connection below
     }
 
     noise.connect(filter); filter.connect(gainNode); gainNode.connect(window.audioCtx.destination);
