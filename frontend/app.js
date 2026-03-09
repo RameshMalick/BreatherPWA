@@ -157,6 +157,13 @@ function applyTheme(theme) {
 applyTheme(State.setting_theme);
 
 function switchScreen(target) {
+    if (State.current_screen === 'screen-exercise' && target !== 'screen-exercise') {
+        State.is_running = false;
+        setText("btn-toggle-engine", "Start");
+        controlAudio(false, State.music_volume, State.setting_music);
+        window.speechSynthesis.cancel();
+    }
+
     document.getElementById(State.current_screen)?.classList.remove('active');
     const newScreen = document.getElementById(target);
     if (newScreen) newScreen.classList.add('active');
