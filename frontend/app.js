@@ -407,23 +407,42 @@ function attachSlider(sliderId, fillId, isVoice) {
     if (!slider) return;
 
     function updateVal(e) {
-        if (e.buttons === 1) {
-            const rect = slider.getBoundingClientRect();
-            let pct = (rect.bottom - e.clientY) / rect.height;
-            pct = Math.max(0, Math.min(1, pct));
+        let clientY;
+        if (e.type.startsWith('touch')) {
+            clientY = e.touches[0].clientY;
+        } else {
+            if (e.buttons !== 1) return;
+            clientY = e.clientY;
+        }
 
-            document.getElementById(fillId).style.height = `${pct * 100}%`;
+        const rect = slider.getBoundingClientRect();
+        let pct = (rect.bottom - clientY) / rect.height;
+        pct = Math.max(0, Math.min(1, pct));
 
-            if (isVoice) {
-                State.voice_volume = pct;
-            } else {
-                State.music_volume = pct;
-                if (State.is_running) controlAudio(true, State.music_volume, State.setting_music);
-            }
+        document.getElementById(fillId).style.height = `${pct * 100}%`;
+
+        if (isVoice) {
+            State.voice_volume = pct;
+        } else {
+            State.music_volume = pct;
+            if (State.is_running) controlAudio(true, State.music_volume, State.setting_music);
         }
     }
+
+    // Mouse events
     slider.addEventListener('mousemove', updateVal);
     slider.addEventListener('mousedown', updateVal);
+
+    // Touch events
+    slider.addEventListener('touchmove', (e) => {
+        if (e.cancelable) e.preventDefault();
+        updateVal(e);
+    }, { passive: false });
+
+    slider.addEventListener('touchstart', (e) => {
+        if (e.cancelable) e.preventDefault();
+        updateVal(e);
+    }, { passive: false });
 }
 attachSlider("slider-voice", "fill-voice", true);
 attachSlider("slider-music", "fill-music", false);
