@@ -197,7 +197,14 @@ function speak(text) {
 }
 
 // Custom Audio Synth Port
-window.natureAudio = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=ambient-piano-amp-strings-10711.mp3');
+const AUDIO_TRACKS = {
+    'nature': 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=ambient-piano-amp-strings-10711.mp3',
+    'yoga1': 'https://cdn.pixabay.com/download/audio/2022/11/22/audio_756f505436.mp3',
+    'yoga2': 'https://cdn.pixabay.com/download/audio/2022/02/07/audio_d0bf2ab1ec.mp3',
+    'yoga3': 'https://cdn.pixabay.com/download/audio/2022/10/25/audio_824f11d1bd.mp3',
+    'yoga4': 'https://cdn.pixabay.com/download/audio/2022/05/16/audio_f5bd36528d.mp3'
+};
+window.natureAudio = new Audio(AUDIO_TRACKS['nature']);
 window.natureAudio.loop = true;
 window.audioCtx = null;
 window.activeNodes = [];
@@ -208,7 +215,11 @@ function controlAudio(play, volume, audioType) {
     if (!window.audioCtx) window.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     if (window.audioCtx.state === 'suspended' && play) window.audioCtx.resume();
 
-    if (audioType === 'nature') {
+    if (AUDIO_TRACKS[audioType]) {
+        if (window.natureAudio.src !== AUDIO_TRACKS[audioType]) {
+            window.natureAudio.src = AUDIO_TRACKS[audioType];
+            window.natureAudio.load();
+        }
         window.natureAudio.volume = volume;
         if (play) window.natureAudio.play().catch(console.error);
         else window.natureAudio.pause();
@@ -223,7 +234,7 @@ function controlAudio(play, volume, audioType) {
         try { node.disconnect(); } catch (e) { }
     }
 
-    if (!play || audioType === 'nature') return;
+    if (!play || AUDIO_TRACKS[audioType]) return;
 
     let bufferSize = window.audioCtx.sampleRate * 2;
     let buffer = window.audioCtx.createBuffer(1, bufferSize, window.audioCtx.sampleRate);

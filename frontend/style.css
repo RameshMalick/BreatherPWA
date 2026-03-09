@@ -42,6 +42,41 @@ body[data-theme="purple"] {
   --bg-bottom: #4c1d95;
 }
 
+[data-theme="crimson"] {
+  --primary-color: #ef4444;
+  --glass-card: rgba(69, 10, 10, 0.4);
+  --bg-gradient-start: #2a0a0a;
+  --bg-gradient-end: #0f0505;
+}
+
+[data-theme="slate"] {
+  --primary-color: #94a3b8;
+  --glass-card: rgba(51, 65, 85, 0.4);
+  --bg-gradient-start: #1e293b;
+  --bg-gradient-end: #0f172a;
+}
+
+[data-theme="gold"] {
+  --primary-color: #f59e0b;
+  --glass-card: rgba(120, 53, 15, 0.4);
+  --bg-gradient-start: #451a03;
+  --bg-gradient-end: #1c0a00;
+}
+
+[data-theme="ocean"] {
+  --primary-color: #0ea5e9;
+  --glass-card: rgba(8, 47, 73, 0.4);
+  --bg-gradient-start: #082f49;
+  --bg-gradient-end: #04121c;
+}
+
+[data-theme="rose"] {
+  --primary-color: #f43f5e;
+  --glass-card: rgba(76, 5, 25, 0.4);
+  --bg-gradient-start: #4c0519;
+  --bg-gradient-end: #1e020a;
+}
+
 * {
   margin: 0;
   padding: 0;
