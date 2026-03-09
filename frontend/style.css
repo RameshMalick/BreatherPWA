@@ -359,6 +359,13 @@ body {
   color: var(--text-main);
 }
 
+.settings-select optgroup {
+  background: var(--bg-bottom);
+  color: var(--text-muted);
+  font-style: normal;
+  font-weight: 700;
+}
+
 /* Stats */
 .stats-grid {
   display: grid;
