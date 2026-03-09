@@ -243,7 +243,18 @@
     <!-- PWA & IndexedDB Initialization -->
     <script>
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js'); });
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+
+            // Listen for the controlling service worker changing (i.e. sw.js jumped from vX to vY)
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    refreshing = true;
+                    window.location.reload();
+                }
+            });
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/idb@8/build/umd.js"></script>

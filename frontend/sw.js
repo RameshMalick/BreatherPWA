@@ -1,4 +1,4 @@
-const CACHE_NAME = 'breather-v2';
+const CACHE_NAME = 'breather-v3';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
@@ -9,6 +9,7 @@ const ASSETS_TO_CACHE = [
 ];
 
 self.addEventListener('install', event => {
+    self.skipWaiting(); // Force the waiting service worker to become the active service worker.
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => cache.addAll(ASSETS_TO_CACHE))
@@ -22,7 +23,7 @@ self.addEventListener('activate', event => {
                 keys.filter(key => key !== CACHE_NAME)
                     .map(key => caches.delete(key))
             );
-        })
+        }).then(() => self.clients.claim()) // Claim clients immediately
     );
 });
 
