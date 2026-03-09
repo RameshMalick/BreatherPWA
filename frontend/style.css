@@ -76,6 +76,9 @@ body {
   flex-direction: column;
   height: 100%;
   padding: 24px;
+  overflow-y: auto;
+  padding-bottom: 120px;
+  /* Leave space for tab bar globally */
 }
 
 .screen.active {
@@ -462,6 +465,7 @@ body {
   color: #0f172a;
   width: 100%;
   max-width: 200px;
+  align-self: center;
   transition: opacity 0.2s, transform 0.2s;
 }
 
