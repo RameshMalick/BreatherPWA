@@ -20,7 +20,7 @@ WORKDIR /app
 COPY --from=builder /usr/src/app/target/release/backend /usr/local/bin/backend
 
 # Create a directory to hold the SQLite database persistently
-RUN mkdir -p /app/data
+RUN mkdir -p /app/data && touch /app/data/breather.db
 ENV DATABASE_URL="sqlite:///app/data/breather.db"
 
 # Expose the port the Axum server listens on
