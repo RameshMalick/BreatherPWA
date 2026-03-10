@@ -10,7 +10,7 @@ const dbPromise = idb.openDB('breatherbro-db', 2, {
     },
 });
 
-const API_BASE = 'http://localhost:3001/api';
+const API_BASE = 'https://breatherpwa-production.up.railway.app/api';
 
 async function saveSessionLocal(session) {
     const db = await dbPromise;
