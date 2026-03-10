@@ -10,6 +10,7 @@ use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
 use std::env;
 use std::sync::Arc;
 use tower_http::cors::{Any, CorsLayer};
+use tower_http::services::ServeDir;
 
 use handlers::{create_session, delete_session, get_sessions, AppState};
 
@@ -35,9 +36,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .allow_methods(Any)
         .allow_headers(Any);
 
+    let frontend_dir = env::var("FRONTEND_DIR").unwrap_or_else(|_| "../frontend".to_string());
+
     let app = Router::new()
         .route("/api/sessions", get(get_sessions).post(create_session))
         .route("/api/sessions/:id", delete(delete_session))
+        .fallback_service(ServeDir::new(frontend_dir))
         .layer(cors)
         .with_state(state);
 
